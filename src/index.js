@@ -30,7 +30,8 @@ async function run() {
 
     console.log("Workspace:" + project.workspace);
     console.log("FileGlob: " + inputs.fileGlob);
-
+    console.log("File Path: " + project.workspace + "/" + inputs.fileGlob)
+    
     const fileContents = await readFilesToAnalyze(project.workspace, inputs.fileGlob);
     const spectral = await createSpectral(inputs.spectralRuleset);
     let processedPbs = initProcessedPbs();

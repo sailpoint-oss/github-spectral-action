@@ -13,7 +13,7 @@ const {
 
 
 const createSpectral = async ruleset => {
-  const spectral = new Spectral({ resolver: httpAndFileResolver });
+  const spectral = new Spectral();
   spectral.registerFormat('oas2', isOpenApiv2);
   spectral.registerFormat('oas3', isOpenApiv3);
   spectral.registerFormat('json-schema', isJSONSchema);
