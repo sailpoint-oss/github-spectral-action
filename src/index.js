@@ -33,10 +33,13 @@ async function run() {
     let processedPbs = initProcessedPbs();
     for (var i = 0, len = fileContents.length; i < len; i++) {
       const pbs = await runSpectral(spectral, fileContents[i].content);
+      console.log(pbs);
       processedPbs = processPbs(fileContents[i].file, processedPbs, pbs);
     }
 
     const md = await toMarkdown(processedPbs, project);
+
+    console.log(md);
 
     if (md === '') {
       core.info('No lint error found! Congratulation!');
