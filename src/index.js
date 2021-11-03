@@ -31,19 +31,20 @@ async function run() {
     console.log("Workspace:" + project.workspace);
     console.log("FileGlob: " + inputs.fileGlob);
     console.log("File Path: " + project.workspace + "/" + inputs.fileGlob)
-    
+
     const fileContents = await readFilesToAnalyze(project.workspace, inputs.fileGlob);
     const spectral = await createSpectral(inputs.spectralRuleset);
     let processedPbs = initProcessedPbs();
     for (var i = 0, len = fileContents.length; i < len; i++) {
+      console.log(fileContents[i].file + ":" + fileContents[i].content);
       const pbs = await runSpectral(spectral, fileContents[i].content);
-      console.log(pbs);
+      //console.dir(pbs);
       processedPbs = processPbs(fileContents[i].file, processedPbs, pbs);
     }
 
     const md = await toMarkdown(processedPbs, project);
 
-    console.log(md);
+    //console.log(md);
 
     if (md === '') {
       core.info('No lint error found! Congratulation!');
