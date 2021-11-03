@@ -28,6 +28,9 @@ async function run() {
       workspace: process.env.GITHUB_WORKSPACE
     };
 
+    console.log("Workspace:" + project.workspace);
+    console.log("FileGlob: " + inputs.fileGlob);
+
     const fileContents = await readFilesToAnalyze(project.workspace, inputs.fileGlob);
     const spectral = await createSpectral(inputs.spectralRuleset);
     let processedPbs = initProcessedPbs();
