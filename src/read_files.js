@@ -2,7 +2,7 @@ const fs = require('fs');
 const fg = require('fast-glob');
 
 const readFilesToAnalyze = async (githubWorkspace, fileGlob) => {
-  const entries = await fg(githubWorkspace + "/" + fileGlob);
+  const entries = await fg(fileGlob);
 
   let fileContents = [];
   for (let i = 0, len = entries.length; i < len; i++) {
