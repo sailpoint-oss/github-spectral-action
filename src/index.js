@@ -55,7 +55,7 @@ async function run() {
     for (var i = 0, len = fileContents.length; i < len; i++) {
       console.log("Changing Directory to: " + fileContents[i].file.substr(0, fileContents[i].file.lastIndexOf("/")));
       
-      //process.chdir(project.workspace + fileContents[i].file.substr(0, fileContents[i].file.lastIndexOf("/")));
+      process.chdir(project.workspace + "/" + fileContents[i].file.substr(0, fileContents[i].file.lastIndexOf("/")));
 
       let resolvedFileContents = resolver.resolve(fileContents[i].content);
       console.dir(
