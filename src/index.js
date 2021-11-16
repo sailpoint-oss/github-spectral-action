@@ -27,9 +27,15 @@ async function run() {
     const inputs = {
       githubToken: core.getInput("github-token"),
       fileGlob: core.getInput("file-glob") || "sample/sailpoint.yml",
-      spectralRuleset:
+      spectralRootRuleset:
         core.getInput("spectral-ruleset") ||
         "https://raw.githubusercontent.com/sailpoint-oss/api-linter/main/root-ruleset.yaml",
+      spectralPathRuleset:
+        core.getInput("spectral-ruleset") ||
+        "https://raw.githubusercontent.com/sailpoint-oss/api-linter/main/path-ruleset.yaml",
+      spectralSchemaRuleset:
+        core.getInput("spectral-ruleset") ||
+        "https://raw.githubusercontent.com/sailpoint-oss/api-linter/main/schema-ruleset.yaml",
       githubURL: core.getInput("github-url"),
     };
 
@@ -50,25 +56,28 @@ async function run() {
       project.workspace,
       inputs.fileGlob
     );
-    const spectral = await createSpectral(inputs.spectralRuleset);
+    const rootSpectral = await createSpectral(inputs.spectralRootRuleset);
+    const pathSpectral = await createSpectral(inputs.spectralPathRuleset);
+    const schemaSpectral = await createSpectral(inputs.spectralSchemaRuleset);
+
     let processedPbs = initProcessedPbs();
     for (var i = 0, len = fileContents.length; i < len; i++) {
-      console.log("Changing Directory to: " + fileContents[i].file.substr(0, fileContents[i].file.lastIndexOf("/")));
+      console.log(
+        "Changing Directory to: " +
+          fileContents[i].file.substr(0, fileContents[i].file.lastIndexOf("/"))
+      );
+
+      process.chdir(
+        project.workspace +
+          "/" +
+          fileContents[i].file.substr(0, fileContents[i].file.lastIndexOf("/"))
+      );
       
-      process.chdir(project.workspace + "/" + fileContents[i].file.substr(0, fileContents[i].file.lastIndexOf("/")));
-
-      // let resolvedFileContents = resolver.resolve(fileContents[i].content);
-      // console.dir(
-      //   `Resolved File Contents for: ${fileContents[i].file}: ${
-      //     (await resolvedFileContents).result
-      //   }`
-      // );
-
       //console.log(fileContents[i].file + ":" + fileContents[i].content);
       console.log(`Directory Name: ` + __dirname);
       console.log(`Current Working Directory: ` + process.cwd());
-      
-      const pbs = await runSpectral(spectral, fileContents[i].content);
+
+      const pbs = await runSpectral(rootSpectral, fileContents[i].content);
       //console.dir(pbs);
       processedPbs = processPbs(fileContents[i].file, processedPbs, pbs);
     }

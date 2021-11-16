@@ -8,7 +8,15 @@ inputs:
     required: true
     description: The file path to lint with Spectral
     default: '*.oas.{json,yml,yaml}'
-  spectral-ruleset:
+  spectral-root-ruleset:
+    required: true
+    description: Ruleset file to load in Spectral
+    default: 'spectral:oas'
+  spectral-path-ruleset:
+    required: true
+    description: Ruleset file to load in Spectral
+    default: 'spectral:oas'
+  spectral-schema-ruleset:
     required: true
     description: Ruleset file to load in Spectral
     default: 'spectral:oas'
