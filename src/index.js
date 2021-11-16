@@ -57,12 +57,12 @@ async function run() {
       
       process.chdir(project.workspace + "/" + fileContents[i].file.substr(0, fileContents[i].file.lastIndexOf("/")));
 
-      let resolvedFileContents = resolver.resolve(fileContents[i].content);
-      console.dir(
-        `Resolved File Contents for: ${fileContents[i].file}: ${
-          (await resolvedFileContents).result
-        }`
-      );
+      // let resolvedFileContents = resolver.resolve(fileContents[i].content);
+      // console.dir(
+      //   `Resolved File Contents for: ${fileContents[i].file}: ${
+      //     (await resolvedFileContents).result
+      //   }`
+      // );
 
       //console.log(fileContents[i].file + ":" + fileContents[i].content);
       console.log(`Directory Name: ` + __dirname);
