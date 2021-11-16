@@ -32,6 +32,7 @@ async function run() {
         "https://raw.githubusercontent.com/sailpoint-oss/api-linter/main/root-ruleset.yaml",
       githubURL: core.getInput("github-url"),
     };
+
     const project = {
       githubURL: inputs.githubURL,
       repository: process.env.GITHUB_REPOSITORY,
@@ -52,6 +53,9 @@ async function run() {
     const spectral = await createSpectral(inputs.spectralRuleset);
     let processedPbs = initProcessedPbs();
     for (var i = 0, len = fileContents.length; i < len; i++) {
+      
+      //process.chdir("sample")
+
       let resolvedFileContents = resolver.resolve(fileContents[i].content);
       console.dir(
         `Resolved File Contents for: ${fileContents[i].file}: ${
@@ -60,6 +64,9 @@ async function run() {
       );
 
       //console.log(fileContents[i].file + ":" + fileContents[i].content);
+      console.log(`Directory Name: ` + __dirname);
+      console.log(`Current Working Directory: ` + process.cwd());
+      
       const pbs = await runSpectral(spectral, fileContents[i].content);
       //console.dir(pbs);
       processedPbs = processPbs(fileContents[i].file, processedPbs, pbs);
@@ -67,7 +74,7 @@ async function run() {
 
     const md = await toMarkdown(processedPbs, project);
 
-    //console.log(md);
+    console.log(md);
 
     if (md === "") {
       core.info("No lint error found! Congratulation!");
