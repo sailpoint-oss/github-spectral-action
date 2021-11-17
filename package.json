@@ -25,8 +25,7 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^2.1.1",
-    "@stoplight/spectral": "^5.1.0",
-    "fast-glob": "^3.2.2"
+    "@stoplight/spectral": "^5.1.0"
   },
   "devDependencies": {
     "acorn": "^7.1.1",

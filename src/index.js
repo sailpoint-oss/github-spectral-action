@@ -4,19 +4,10 @@ const readFilesToAnalyze = require("./read_files");
 const { initProcessedPbs, processPbs } = require("./process_pbs");
 const { runSpectral, createSpectral } = require("./spectral");
 const toMarkdown = require("./to_markdown");
-const json_ref_readers_1 = require("@stoplight/json-ref-readers");
-const { Resolver } = require("@stoplight/json-ref-resolver");
 
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const resolver = new Resolver({
-      // resolvers can do anything, so long as they define an async read function that resolves to a value
-      resolvers: {
-        file: { resolve: json_ref_readers_1.resolveFile },
-      },
-    });
-
     const context = github.context;
     // if (!context.payload.pull_request) {
     //   core.error('this action only works on pull_request events');
@@ -72,12 +63,22 @@ async function run() {
           "/" +
           fileContents[i].file.substr(0, fileContents[i].file.lastIndexOf("/"))
       );
-      
+
+      let pbs = "";
+
+      if (fileContents[i].file.contains.includes(`sailpoint-api.`)) {
+        pbs = runSpectral(rootSpectral, fileContents[i].content);
+      } else if (fileContents[i].file.includes(`paths`)) {
+        pbs = runSpectral(pathSpectral, fileContents[i].content);
+      } else if (fileContents[i].file.includes(`schema`)) {
+        pbs = runSpectral(schemaSpectral, fileContents[i].content);
+      }
+
       //console.log(fileContents[i].file + ":" + fileContents[i].content);
       console.log(`Directory Name: ` + __dirname);
       console.log(`Current Working Directory: ` + process.cwd());
 
-      const pbs = await runSpectral(rootSpectral, fileContents[i].content);
+      //const pbs = await runSpectral(rootSpectral, fileContents[i].content);
       //console.dir(pbs);
       processedPbs = processPbs(fileContents[i].file, processedPbs, pbs);
     }
