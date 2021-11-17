@@ -2,6 +2,8 @@ const fs = require('fs');
 const fg = require('fast-glob');
 
 const readFilesToAnalyze = async (githubWorkspace, fileGlob) => {
+  console.log(`TypeOf: ${typeof(fileGlob)}`)
+  
   let files = fileGlob.join().split(",");
   for (let j = 0, len = files.length; j < len; j++) {
     console.log(`FILE ${j} ${files[j]}`);
