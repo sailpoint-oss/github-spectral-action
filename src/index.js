@@ -66,7 +66,7 @@ async function run() {
 
       let pbs = "";
 
-      if (fileContents[i].file.contains.includes(`sailpoint-api.`)) {
+      if (fileContents[i].file.includes(`sailpoint-api.`)) {
         pbs = runSpectral(rootSpectral, fileContents[i].content);
       } else if (fileContents[i].file.includes(`paths`)) {
         pbs = runSpectral(pathSpectral, fileContents[i].content);
