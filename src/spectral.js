@@ -26,7 +26,7 @@ const createSpectral = async ruleset => {
   return spectral;
 };
 
-const runSpectral = async (spectral, parsed) => await spectral.run(parsed);
+const runSpectral = async (spectral, parsed, ignoreUnknownFormatFlag) => await spectral.run(parsed, {ignoreUnknownFormat: ignoreUnknownFormatFlag});
 
 module.exports = {
   createSpectral: createSpectral,

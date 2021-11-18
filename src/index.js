@@ -64,17 +64,17 @@ async function run() {
           fileContents[i].file.substr(0, fileContents[i].file.lastIndexOf("/"))
       );
 
-      let pbs = "";
-
+      let pbs = "";  
+      
       if (fileContents[i].file.includes(`sailpoint-api.`)) {
         console.log(`Running root ruleset on ${fileContents[i].file}`);
-        pbs = await runSpectral(rootSpectral, fileContents[i].content);
+        pbs = await runSpectral(rootSpectral, fileContents[i].content, false);
       } else if (fileContents[i].file.includes(`paths`)) {
         console.log(`Running path ruleset on ${fileContents[i].file}`);
-        pbs = await runSpectral(pathSpectral, fileContents[i].content);
+        pbs = await runSpectral(pathSpectral, fileContents[i].content, true);
       } else if (fileContents[i].file.includes(`schema`)) {
         console.log(`Running schema ruleset on ${fileContents[i].file}`);
-        pbs = await runSpectral(schemaSpectral, fileContents[i].content);
+        pbs = await runSpectral(schemaSpectral, fileContents[i].content, true);
       }
 
       //console.log(fileContents[i].file + ":" + fileContents[i].content);
