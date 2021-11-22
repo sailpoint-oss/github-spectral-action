@@ -17,21 +17,58 @@ Check [PR showcase](https://github.com/l-lin/spectral-comment-action/pull/3#issu
 Add or edit an existing workflow:
 
 ```yaml
-name: "test-action"
+name: "Run Spectral API Linter"
+
 on:
-  # only works on pull requests
   pull_request:
+    branches:
+      - master
 
 jobs:
-  test:
+  spectral_workflow:
     name: Lint OpenAPI
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: l-lin/spectral-comment-action@0.1.0
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        file-glob: sample/*.yml
+      # Checkout the pull request to run Spectral on
+      - name: Checkout PR branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+
+      # Checkout custom spectral action to comment issues to the PR
+      - name: Checkout Spectral Action
+        uses: actions/checkout@v2
+        with:
+          repository: tyler-mairose-sp/spectral-comment-action
+          path: spectral-comment-action
+          ref: master
+
+      # Install node and run npm install on spectral action to install required packages
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - run: |
+          ls -al
+          cd spectral-comment-action
+          npm ci
+
+      # Run get-changed-files step to get all files changed in the PR as a comma seperated list for the spectral linter action to process with our rulesets
+      - id: files
+        with:
+          format: "csv"
+        uses: jitterbit/get-changed-files@v1
+
+      # Run the spectral linter action and recieve a comment on the PR for any issues the linter found
+      - name: Spectral comment
+        uses: ./spectral-comment-action/
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          file-glob: ${{ steps.files.outputs.all }}
+          spectral-root-ruleset: http://raw.githubusercontent.com/sailpoint-oss/api-linter/main/root-ruleset.yaml
+          spectral-path-ruleset: http://raw.githubusercontent.com/sailpoint-oss/api-linter/main/path-ruleset.yaml
+          spectral-schema-ruleset: http://raw.githubusercontent.com/sailpoint-oss/api-linter/main/schema-ruleset.yaml
+
 ```
 
 ## License

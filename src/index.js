@@ -9,11 +9,11 @@ const toMarkdown = require("./to_markdown");
 async function run() {
   try {
     const context = github.context;
-    // if (!context.payload.pull_request) {
-    //   core.error('this action only works on pull_request events');
-    //   core.setOutput('comment-created', 'false');
-    //   return;
-    // }
+    if (!context.payload.pull_request) {
+      core.error("this action only works on pull_request events");
+      core.setOutput("comment-created", "false");
+      return;
+    }
 
     const inputs = {
       githubToken: core.getInput("github-token"),
@@ -64,8 +64,8 @@ async function run() {
           fileContents[i].file.substr(0, fileContents[i].file.lastIndexOf("/"))
       );
 
-      let pbs = "";  
-      
+      let pbs = "";
+
       if (fileContents[i].file.includes(`sailpoint-api.`)) {
         console.log(`Running root ruleset on ${fileContents[i].file}`);
         pbs = await runSpectral(rootSpectral, fileContents[i].content, false);
@@ -77,18 +77,14 @@ async function run() {
         pbs = await runSpectral(schemaSpectral, fileContents[i].content, true);
       }
 
-      //console.log(fileContents[i].file + ":" + fileContents[i].content);
-      console.log(`Directory Name: ` + __dirname);
-      console.log(`Current Working Directory: ` + process.cwd());
+      //console.log(`Current Working Directory: ` + process.cwd());
 
-      //const pbs = await runSpectral(rootSpectral, fileContents[i].content);
-      //console.dir(pbs);
       processedPbs = processPbs(fileContents[i].file, processedPbs, pbs);
     }
 
     const md = await toMarkdown(processedPbs, project);
 
-    console.log(md);
+    //console.log(md);
 
     if (md === "") {
       core.info("No lint error found! Congratulation!");
