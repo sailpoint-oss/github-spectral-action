@@ -21,8 +21,8 @@ let buildNotes = (pbs, project, absFilePath) => {
   const relativeFilePath = buildRelativeFilePath(absFilePath, project.workspace);
   let md = `> ${relativeFilePath}
 
-|Range|Severity|Code|Message|
-|-----|--------|----|-------|
+|File Location|Severity|Rule Name|Message|
+|-------------|--------|---------|-------|
 `
   for (var i = 0, len = pbs.length; i < len; i++) {
     md += buildNote(pbs[i], project, relativeFilePath) + '\n';
