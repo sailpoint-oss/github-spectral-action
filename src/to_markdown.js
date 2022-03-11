@@ -12,8 +12,7 @@ let toMarkdown = async (processedPbs, project) => {
   const nbInfos = severitiesCount[2];
   const nbHints = severitiesCount[3];
   const nbPbs = nbErrors + nbWarnings + nbInfos + nbHints;
-  let md = `<details>
-<summary>OpenAPI lint errors: ${nbPbs} problems (${nbErrors} errors, ${nbWarnings} warnings, ${nbInfos} infos, ${nbHints} hints)</summary>
+  let md = `OpenAPI lint errors: ${nbPbs} problems (${nbErrors} errors, ${nbWarnings} warnings, ${nbInfos} infos, ${nbHints} hints)
 
 `;
   for (let absFilePath in pbsMap) {
@@ -23,7 +22,7 @@ let toMarkdown = async (processedPbs, project) => {
       md += '\n';
     }
   }
-  md += `</details>`;
+  //md += `</details>`;
   return md;
 };
 
