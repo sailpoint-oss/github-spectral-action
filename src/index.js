@@ -19,13 +19,13 @@ async function run() {
       githubToken: core.getInput("github-token"),
       fileGlob: core.getInput("file-glob") || "sample/sailpoint.yml",
       spectralRootRuleset:
-        core.getInput("spectral-ruleset") ||
+        core.getInput("spectral-root-ruleset") ||
         "https://raw.githubusercontent.com/sailpoint-oss/api-linter/main/root-ruleset.yaml",
       spectralPathRuleset:
-        core.getInput("spectral-ruleset") ||
+        core.getInput("spectral-path-ruleset") ||
         "https://raw.githubusercontent.com/sailpoint-oss/api-linter/main/path-ruleset.yaml",
       spectralSchemaRuleset:
-        core.getInput("spectral-ruleset") ||
+        core.getInput("spectral-schema-ruleset") ||
         "https://raw.githubusercontent.com/sailpoint-oss/api-linter/main/schema-ruleset.yaml",
       githubURL: core.getInput("github-url"),
     };
