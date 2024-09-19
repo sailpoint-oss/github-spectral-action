@@ -47,7 +47,6 @@ async function run() {
       project.workspace,
       inputs.fileGlob
     );
-    const rootSpectral = await createSpectral(inputs.spectralRootRuleset);
     const pathSpectral = await createSpectral(inputs.spectralPathRuleset);
     const schemaSpectral = await createSpectral(inputs.spectralSchemaRuleset);
 
@@ -68,6 +67,7 @@ async function run() {
 
       if (fileContents[i].file.includes(`sailpoint-api.`)) {
         console.log(`Running root ruleset on ${fileContents[i].file}`);
+        const rootSpectral = await createSpectral(inputs.spectralRootRuleset);
         pbs = await runSpectral(rootSpectral, fileContents[i].content, false);
       } else if (fileContents[i].file.includes(`paths`)) {
         console.log(`Running path ruleset on ${fileContents[i].file}`);
