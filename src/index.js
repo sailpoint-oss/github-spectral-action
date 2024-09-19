@@ -47,9 +47,9 @@ async function run() {
       project.workspace,
       inputs.fileGlob
     );
-    const rootSpectral = await createSpectral(inputs.spectralRootRuleset);
-    const pathSpectral = await createSpectral(inputs.spectralPathRuleset);
-    const schemaSpectral = await createSpectral(inputs.spectralSchemaRuleset);
+    var rootSpectral = null;
+    var pathSpectral = null;
+    var schemaSpectral = null;
 
     let processedPbs = initProcessedPbs();
     for (var i = 0, len = fileContents.length; i < len; i++) {
@@ -68,13 +68,16 @@ async function run() {
 
       if (fileContents[i].file.includes(`sailpoint-api.`)) {
         console.log(`Running root ruleset on ${fileContents[i].file}`);
-        pbs = await runSpectral(rootSpectral, fileContents[i].content.slice(0), false);
+        rootSpectral = await createSpectral(inputs.spectralRootRuleset);
+        pbs = await runSpectral(rootSpectral, fileContents[i].content, false);
       } else if (fileContents[i].file.includes(`paths`)) {
         console.log(`Running path ruleset on ${fileContents[i].file}`);
-        pbs = await runSpectral(pathSpectral, fileContents[i].content.slice(0), true);
+        pathSpectral = await createSpectral(inputs.spectralPathRuleset);
+        pbs = await runSpectral(pathSpectral, fileContents[i].content, true);
       } else if (fileContents[i].file.includes(`schema`)) {
         console.log(`Running schema ruleset on ${fileContents[i].file}`);
-        pbs = await runSpectral(schemaSpectral, fileContents[i].content.slice(0), true);
+        schemaSpectral = await createSpectral(inputs.spectralSchemaRuleset);
+        pbs = await runSpectral(schemaSpectral, fileContents[i].content, true);
       }
 
       //console.log(`Current Working Directory: ` + process.cwd());
