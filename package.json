@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Comments pull requests with spectral linter outputs",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "lint": "eslint src/*.js test/*.js",
     "test": "jest"
