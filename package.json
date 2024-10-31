@@ -25,7 +25,8 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^2.1.1",
-    "@stoplight/spectral": "^5.1.0"
+    "@stoplight/spectral": "^5.1.0",
+    "yaml": "^1.7.2"
   },
   "devDependencies": {
     "acorn": "^7.1.1",
